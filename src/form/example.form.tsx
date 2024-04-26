@@ -21,14 +21,62 @@ import {
   TimePickerElement,
 } from "react-hook-form-mui/date-pickers";
 import { useExampleForm } from "./hooks";
-import { Card, CardContent } from "@mui/material";
+import { Button, Card, CardContent } from "@mui/material";
 import { DateFnsProvider } from "react-hook-form-mui/date-fns";
+import { State, useThemeStore } from "../store/use.theme.store";
 
 export const ExampleForm = () => {
   const { methods } = useExampleForm();
 
+  const { setMode, setPrimaryColor } = useThemeStore();
+
+  const handleLightMode = () => setMode("light");
+  const handleDarkMode = () => setMode("dark");
+  const colors = [
+    "#3968DD",
+    "#0FB8CE",
+    "#21A663",
+    "#FF9900",
+    "#FF5154",
+    "#D269E6",
+    "#A548FF",
+    "#575EFD",
+  ];
+
   return (
     <div className="grid grid-cols-2 gap-5">
+      <Card className="col-span-full">
+        <CardContent>
+          <div className="grid grid-cols-4 gap-3">
+            {colors.map((color) => (
+              <Button
+                key={color}
+                onClick={() => setPrimaryColor(color as State["primaryColor"])}
+                style={{
+                  backgroundColor: color,
+                  color: "white",
+                }}
+              >
+                {color}
+              </Button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full">
+        <CardContent>
+          <div className="grid grid-cols-2 gap-3">
+            <Button variant="contained" onClick={handleLightMode}>
+              Light Mode
+            </Button>
+            <Button variant="contained" onClick={handleDarkMode}>
+              Dark Mode
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       <DateFnsProvider>
         <FormProvider {...methods}>
           <div className="grid gap-3">
